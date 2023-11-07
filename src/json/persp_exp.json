@@ -1,0 +1,35 @@
+{
+    "label": "<Diverse Perspectives>",
+    "definition": "This category concerns the person considering diverse perspectives on the issue. The writer considers how past, present, or future events might be viewed by the other party involved in the scenario. The writer attempts to understand the other party’s feelings and motivations, and the reasoning behind them. The writer shows effort in trying to take the perspective of others in the scenario.",
+    "examples": {
+      "present": [
+        {
+          "example": "He’s not a bad employee, he’s going through a hard time.",
+          "explanation": "The person acknowledges different viewpoints on the issue, particularly considering the personal struggles the employee may be facing, thus showing an understanding of the employee's feelings and motivations."
+        },
+        {
+          "example": "I tried to understand how they’ve been feeling. They could be depressed or burnt out, and were I in their shoes, I might also be hesitant to discuss these kinds of problems with my manager.",
+          "explanation": "States that they considered the other person’s perspective and viewpoints, including different ways how the person may have felt in this situation and why they did what they did."
+        },
+        {
+          "example": "Although I have the restaurant's interests at heart, I can see that the employee is struggling with something. They have been a good worker before, perhaps there's a chance they could turn things around given the right support.",
+          "explanation": "The writer acknowledges the perspective of the employee, recognizing the struggle they are going through while also understanding their past performance and potential for future improvement."
+        }
+      ],
+      "absent": [
+        {
+          "example": "It's not my problem if they can't handle their responsibilities. They are clearly not fit for this job.",
+          "explanation": "The person does not consider the employee's perspective or potential reasons for their underperformance. The statement lacks empathy towards the employee's situation, focusing solely on the consequences of their actions rather than attempting to understand their motivations or feelings."
+        },
+        {
+          "example": "They've had plenty of time to improve, but they have consistently failed. Their excuses are just that - excuses.",
+          "explanation": "The person does not take into account the employee's perspective or potential reasons for their lack of improvement, and is dismissive of their explanations."
+        },
+        {
+          "example": "We can't run a business based on sympathies. If they can't meet the standards, they can't work here.",
+          "explanation": "The person does not consider the employee’s feelings or reasons behind their poor performance, focusing only on the business aspect, and makes no effort to understand the employee from a broader perspective."
+        }
+      ]
+    }
+}
+  

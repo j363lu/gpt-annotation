@@ -1,0 +1,34 @@
+{
+  "label": "<Search for Conflict Resolution>",
+  "definition": "This category concerns the writer's attempt to find a resolution for the issue at hand. The writer suggests possible solutions, ranging from amicable to drastic measures, reflects on their potential impacts, and discusses their feasibility and potential challenges in implementing them.",
+  "examples": {
+    "present": [
+      {
+        "example": "I think it would be best to ask the employee to take some time off from work and then set some clear expectations about their performance when they return. This would provide me with clear metrics to measure their performance and determine whether they can improve or would have to be let go.",
+        "explanation": "The writer offers a comprehensive solution, which includes a strategy to evaluate its effectiveness. They acknowledge the possibility of the situation not improving, showing an understanding of potential challenges."
+      },
+      {
+        "example": "The employee seems overwhelmed. Maybe offering them a lighter workload or more support might help them to perform better.",
+        "explanation": "This statement provides a more amicable approach to conflict resolution, focusing on support and adjustments rather than drastic measures."
+      },
+      {
+        "example": "Termination might be the only way forward. The issue has persisted despite repeated warnings and assistance.",
+        "explanation": "Here, the writer suggests a drastic solution - termination - but only after other measures have been tried and failed, indicating a measured approach to conflict resolution."
+      }
+    ],
+    "absent": [
+      {
+        "example": "Why should I bother about their performance? It's their job, not mine.",
+        "explanation": "This statement shows a lack of willingness to engage with the issue at hand and neglects the responsibility of finding a resolution."
+      },
+      {
+        "example": "Their performance has nothing to do with me. If they can't do their job, it's their problem.",
+        "explanation": "The writer deflects responsibility and fails to propose any solution to the issue, demonstrating a lack of effort to resolve the conflict."
+      },
+      {
+        "example": "I don't have time to deal with this. It's not my job to solve everyone's problems.",
+        "explanation": "The writer indicates a lack of time or interest in resolving the issue, failing to propose any solution or strategy."
+      }
+    ]
+  }
+}

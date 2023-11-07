@@ -1,0 +1,34 @@
+{
+  "label": "<Intellectual Humility>",
+  "definition": "This category concerns the person recognizing limits of their knowledge. The writer acknowledges that they may not have sufficient knowledge about a particular situation or a person’s behavior to make a comprehensive judgment or response. The statement  mentions how additional information could influence their decision and/or change their opinion of the situation. The writer indicates in the statement that they may lack knowledge about the factors that led to the behavior of the individuals involved in the event behave in a particular way.",
+  "examples": {
+      "present": [
+          {
+              "example": "I wonder if there’s something more going on than what I’ve been told.",
+              "explanation": "States that they acknowledge a potential gap in their understanding."
+          },
+          {
+              "example": "I know that I cannot fully understand the situation as it’s likely stressful and overwhelming. I think it’s important to be more informed on the details of their circumstances to make a better decision and resolve this issue.",
+              "explanation": "States that they're aware of their limited knowledge and expresses the need for additional information."
+          },
+          {
+              "example": "Perhaps there's more to this story that I'm not seeing. Maybe I should gather more facts.",
+              "explanation": "States that they recognize their possible lack of complete information and need to learn more."
+          }
+      ],
+      "absent": [
+          {
+              "example": "I'm sure I understand the whole situation perfectly.",
+              "explanation": "Mentions understanding of the situation, but does not acknowledge potential gaps or a need for more information."
+          },
+          {
+              "example": "I have all details I will ever need to make a decision.",
+              "explanation": "Mentions decision making, but doesn't acknowledge potential knowledge gaps or the influence of additional information."
+          },
+          {
+              "example": "Whatever the reasons are, the behavior is simply unacceptable.",
+              "explanation": "Mentions the behavior of individuals, but doesn't express a need for understanding the factors that led to such behavior."
+          }
+      ]
+  }
+}

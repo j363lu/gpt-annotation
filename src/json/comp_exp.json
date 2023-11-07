@@ -1,0 +1,35 @@
+{
+    "label": "<Perspective-integration/search for Compromise>",
+    "definition": "This category concerns the writer's ability to consider and synthesize the perspectives of different stakeholders when assessing an issue or solution. The writer takes into account how a potential solution might impact all parties and anticipates the resulting outcomes, thus demonstrating a search for a compromise that respects all viewpoints and interests.",
+    "examples": {
+      "present": [
+        {
+          "example": "Keeping their mental health in mind, I think I’d offer them to take a leave of absence to recover.",
+          "explanation": "The writer integrates the employee's perspective and the need to maintain productivity, suggesting a compromise that allows for the employee's recovery while limiting impact on work."
+        },
+        {
+          "example": "Although I would let the employee go, I make sure to let them know they are welcome back if they recover and encourage them to take care of themselves. This would be initially stressful for them, but I think it would be better in the long term not to impose a deadline on their recovery.",
+          "explanation": "The writer integrates the immediate needs of the business with the long-term health of the employee, proposing a compromise that addresses both concerns."
+        },
+        {
+          "example": "I understand the concerns from our team about productivity, but we also need to consider the mental health of our colleagues. Perhaps we could offer flexible work hours or mental health resources to support those who are struggling, while ensuring our project timelines are met.",
+          "explanation": "The writer takes into account the perspectives of the team, the struggling employee, and the need for productivity, and suggests a compromise that seeks to address all these elements."
+        }
+      ],
+      "absent": [
+        {
+          "example": "They've not been performing well, we should just let them go. It's the best for the company.",
+          "explanation": "The writer does not integrate the employee's perspective, showing no attempt to find a compromise that respects all viewpoints."
+        },
+        {
+          "example": "If they can't handle the job, they shouldn't be here. It's as simple as that.",
+          "explanation": "The writer fails to consider different perspectives and does not suggest a solution that might accommodate various interests."
+        },
+        {
+          "example": "I understand they are having personal issues, and the team is worried about the workload. However, I don't see any other way but to let them go.",
+          "explanation": "Despite recognizing different perspectives, the writer fails to integrate these perspectives to find a compromise, suggesting a solution that primarily caters to one interest."
+        }
+      ]
+    }
+}
+  

@@ -1,0 +1,35 @@
+{
+    "label": "<Open-mindedness to Change>",
+    "definition": "This category concerns the writer's openness to multiple possible outcomes or trajectories in a given situation. The writer acknowledges the idea of change in the future and perceives the world as being in flux or actively explores the idea of change in the future. They refer to two or more potential outcomes and establish an explicit link between them, demonstrating an understanding that the situation could unfold in various ways.",
+    "examples": {
+      "present": [
+        {
+          "example": "I realized that if I dismiss their situation and don’t show understanding, they may end up leaving work and hinder the progress of the projects assigned to them.",
+          "explanation": "The writer envisages multiple potential outcomes depending on how they handle the situation, showing an openness to change and a recognition of the future's uncertainty."
+        },
+        {
+          "example": "I wonder if I express my sympathy and show them I’m capable of helping them through tough times, would they come to me sooner when they’re struggling? If I can handle this situation well, it might improve their progress and create a positive ripple effect in the research lab.",
+          "explanation": "The writer contemplates multiple potential scenarios and their implications, demonstrating openness to change and acknowledging the future's fluidity."
+        },
+        {
+          "example": "There are several paths we can take with this issue. I can either fire this employee, based on their underperformance, or explore a new approach that could potentially yield more promising results.",
+          "explanation": "The writer presents multiple trajectories for how the issue may unfold, illustrating an openness to change by considering both the traditional approach of termination and an alternative strategy that might lead to better outcomes."
+        }
+      ],
+      "absent": [
+        {
+          "example": "They've been underperforming for a while now. It's time to let them go. We can't afford any more delays in our projects.",
+          "explanation": "The writer fails to consider alternative solutions or outcomes to the situation, showing a lack of openness to change."
+        },
+        {
+          "example": "Their performance is not meeting the mark. Unless they show a dramatic improvement by the end of this month, there is only one thing that could happen - I will have to terminate their contract.",
+          "explanation": "The writer, by stating a single potential outcome, demonstrates a lack of openness to change and a limited consideration for alternative trajectories or future possibilities."
+        },
+        {
+          "example": "We have always done it this way, and I see no reason why we should change our approach now. There's too much at stake to risk trying something new.",
+          "explanation": "The writer demonstrates resistance to change and does not consider the potential benefits of exploring different approaches."
+        }
+      ]
+    }
+}
+  
