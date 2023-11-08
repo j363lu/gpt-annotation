@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import Form from './Form';
+// import Form from './components/Form';
+import SurveyGUI from './components/SurveyGUI';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Form />
+    <SurveyGUI />
   </React.StrictMode>
 );
 

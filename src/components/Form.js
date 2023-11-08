@@ -5,7 +5,7 @@ import { Button, Container, LinearProgress } from "@mui/material";
 
 function Form() {
   const [key, setKey] = useState("");
-  const [model, setModel] = useState({"gpt3.5": false, "gpt4": false});
+  const [model, setModel] = useState({"gpt-3.5-turbo": false, "gpt-4": false});
   const [shot, setShot] = useState({"zero": false, "few": false});
   const [feature, setFeature] = useState({
     "Limits": false, 
@@ -44,8 +44,9 @@ function Form() {
   }
 
   const handleSubmit = async () => {
+    // the parsed csv is an array of objects
     const d = await parseCsv();
-    console.log(d);
+    console.log(d);                 // Validate: column should be in the csv!
   }
 
   // parse csv
@@ -90,8 +91,8 @@ function Form() {
       <FormControl fullWidth margin="normal">
         <FormLabel component="legend">Model</FormLabel>
         <FormGroup row>
-          <FormControlLabel control={<Checkbox checked={model["gpt3.5"]} name="gpt3.5" onChange={handleModelChange} />} label="gpt-3.5-turbo" />
-          <FormControlLabel control={<Checkbox checked={model["gpt4"]} name="gpt4" onChange={handleModelChange} />} label="gpt-4" />
+          <FormControlLabel control={<Checkbox checked={model["gpt-3.5-turbo"]} name="gpt-3.5-turbo" onChange={handleModelChange} />} label="gpt-3.5-turbo" />
+          <FormControlLabel control={<Checkbox checked={model["gpt-4"]} name="gpt-4" onChange={handleModelChange} />} label="gpt-4" />
         </FormGroup>
       </FormControl>
 
@@ -126,7 +127,7 @@ function Form() {
         onClick={handleSubmit}
         disabled={
           !key || 
-          (!model["gpt3.5"] && !model["gpt4"]) || 
+          (!model["gpt-3.5-turbo"] && !model["gpt-4"]) || 
           (!shot["few"] && !shot["zero"]) || 
           (!feature["Change"] && !feature["Limits"] && !feature["Compromise"] && !feature["Perspective"] && !feature["Resolution"]) || 
           !csv || 
