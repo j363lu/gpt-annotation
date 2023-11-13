@@ -1,13 +1,22 @@
-import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
+
+export const validateKey = async (apiKey) => {  
+  try {
+    await requestGPT(apiKey, [])
+  } catch (err) {
+    if (err.message.includes("401")) return false;
+  }
+  return true;
+}
 
 // returns a completion object
 // https://platform.openai.com/docs/api-reference/chat/object
-const requestGPT = async (apiKey, promptList, model="gpt-3.5-turbo", temperature=0) => {
-  // set api key
-  const configuration = new Configuration({
+const requestGPT = async (apiKey, promptList, model="gpt-3.5-turbo", temperature=0, maxTries=3) => {
+  const openai = new OpenAI({
     apiKey: apiKey,
+    dangerouslyAllowBrowser: true,
+    maxRetries: maxTries
   });
-  const openai = new OpenAIApi(configuration);
   
   // generate response
   const completion = await openai.chat.completions.create({
@@ -46,58 +55,14 @@ const validateResponse = (parsed) => {
 }
 
 // returns a JSON {code: "", response: ""}
-const getResponse = async (apiKey, promptList, model="gpt-3.5-turbo", temperature=0, maxTries=3) => {
-  let attempt = 0;
-  while (attempt < maxTries) {
-    const res = await requestGPT(apiKey, promptList, model, temperature);
-    const parsed = parseResponse(res);
-    const isValid = validateResponse(parsed);
-    if (isValid) {
-      const result = JSON.parse(parsed);
-      return result;
-    }
-    attempt += 1;
+export const getResponse = async (apiKey, promptList, model="gpt-3.5-turbo", temperature=0, maxTries=3) => {
+  const res = await requestGPT(apiKey, promptList, model, temperature, maxTries);
+  const parsed = parseResponse(res);
+  const isValid = validateResponse(parsed);
+  if (isValid) {
+    const result = JSON.parse(parsed);
+    return result;
   }
   return {code: "NA", explanation: "NA"};
 }
 
-// given a parsed csv as an array of JSON, process the specified column for the specified
-//   models, zero/few shots and features 
-const process = async (apiKey, parsedCsv, models, shots, features, column) => {
-  let result = [];
-
-  // for all rows
-  for (let i = 0; i < parsedCsv.length; ++i) {
-    let row = {};
-    const text = parsedCsv[i][column];
-    row.text = text;
-
-    // for all models
-    for (const [model, includeModel] of Object.entries(models)) {
-      if (!includeModel) continue;
-
-      // for all shots
-      for (const [shot, includeShot] of Object.entries(shots)) {
-        if (!includeShot) continue;
-
-        // for all features
-        for (const [feature, includeFeature] of Object.entries(features)) {
-          if (!includeFeature) continue;
-
-          // const promptList = [
-          //   {"role": "system", "content": },
-          //   {"role": "user", "content": },
-          // ];
-
-          const res = await getResponse(apiKey, promptList, model);
-          row[`${feature} code`] = res.code;
-          row[`${feature} explanation`] = res.explanation;
-          await new Promise(r => setTimeout(r, 20000));  // wait
-
-        }
-      }
-    }
-    result.push(row);
-  }
-  return result;
-}

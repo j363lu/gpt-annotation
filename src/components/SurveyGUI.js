@@ -3,139 +3,145 @@ import { Survey } from 'survey-react-ui';
 import 'survey-core/defaultV2.min.css';
 import { DefaultLight } from 'survey-core/themes/default-light';
 
+import surveyJson from '../json/survey.json'
+import { parseSurveyCsv } from '../utils/helperFuncs';
+import { getResponse, validateKey } from '../utils/requestGPT';
+
+// saving survey data to local storage so that particiants can continue on incomplete surveys
+const storageItemKey = "gpt-annotations";
+function saveSurveyData (survey) {
+    const data = survey.data;
+    window.localStorage.setItem(storageItemKey, JSON.stringify(data));
+}
+
 function SurveyGUI() {
-  const surveyJson = {
-    "logoPosition": "right",
-    "pages": [
-     {
-      "name": "page1",
-      "elements": [
-       {
-        "type": "text",
-        "name": "apiKey",
-        "title": "OpenAI API key",
-        "description": "Please enter your OpenAI API Key",
-        "hideNumber": true,
-        "isRequired": true,
-        "requiredErrorText": "Please enter an OpenAI API Key",
-        "inputType": "password"
-       },
-       {
-        "type": "file",
-        "name": "csv",
-        "title": "CSV File",
-        "description": "Please choose a CSV file",
-        "hideNumber": true,
-        "isRequired": true,
-        "requiredErrorText": "Please choose a CSV file",
-        "acceptedTypes": ".csv",
-        "waitForUpload": true,
-        "needConfirmRemoveFile": true
-       },
-       {
-        "type": "text",
-        "name": "column",
-        "title": "Column name",
-        "description": "Please enter the column name in the CSV file containing text to be annotated",
-        "hideNumber": true,
-        "isRequired": true,
-        "requiredErrorText": "Please specify the column name in the CSV file"
-       }
-      ],
-      "title": "API Key and CSV file"
-     },
-     {
-      "name": "page2",
-      "elements": [
-       {
-        "type": "paneldynamic",
-        "name": "features",
-        "title": "Features",
-        "hideNumber": true,
-        "isRequired": true,
-        "templateElements": [
-         {
-          "type": "text",
-          "name": "featureName",
-          "title": "Feature name",
-          "description": "What is the name of the feature?",
-          "hideNumber": true,
-          "isRequired": true,
-          "requiredErrorText": "Please enter the name of the feature"
-         },
-         {
-          "type": "checkbox",
-          "name": "models",
-          "title": "Models",
-          "description": "Which model(s) to use?",
-          "hideNumber": true,
-          "isRequired": true,
-          "requiredErrorText": "Please select at least one model",
-          "choices": [
-           "gpt-3.5-turbo",
-           "gpt-4"
-          ],
-          "maxSelectedChoices": "",
-          "minSelectedChoices": ""
-         },
-         {
-          "type": "radiogroup",
-          "name": "classification",
-          "title": "Classification type",
-          "description": "What is the classification type",
-          "hideNumber": true,
-          "isRequired": true,
-          "requiredErrorText": "Please select a classification type",
-          "choices": [
-           "Binary",
-           "Ordinal"
-          ]
-         },
-         {
-          "type": "checkbox",
-          "name": "shots",
-          "title": "Zero-shot/Few-shot",
-          "description": "Zero-shot or Few-shot?",
-          "hideNumber": true,
-          "isRequired": true,
-          "requiredErrorText": "Please select at least one option",
-          "choices": [
-           "Zero-shot",
-           "Few-shot"
-          ],
-          "maxSelectedChoices": "",
-          "minSelectedChoices": ""
-         },
-         {
-          "type": "comment",
-          "name": "json",
-          "title": "Definition and examples",
-          "description": "Please provide JSON for the definition and examples of the feature",
-          "hideNumber": true,
-          "isRequired": true,
-          "requiredErrorText": "Please provide a JSON"
-         }
-        ],
-        "templateTabTitle": "Feature {panelIndex}",
-        "panelCount": 1,
-        "maxPanelCount": 10,
-        "confirmDelete": true,
-        "confirmDeleteText": "Do you want to delete the feature?",
-        "panelAddText": "New feature",
-        "renderMode": "tab",
-        "tabAlign": "left"
-       }
-      ],
-      "title": "Features",
-      "description": "Select and configure features"
-     }
-    ],
-    "questionErrorLocation": "bottom",
-    "showProgressBar": "bottom"
-   }
+  // given a parsed csv as an array of JSON, process the specified column for the specified
+  //   models, zero/few shots and features 
+  const process = async (apiKey, parsedCsv, column, features) => {
+    let result = [];
+    const userPromptBase = await fetch('/prompts/user_base.txt')
+    .then(res => res.text());
+
+    const systemPromptBase = await fetch('/prompts/system_base.txt')
+    .then(res => res.text());
+
+    // for all rows
+    for (let i = 0; i < parsedCsv.length; ++i) {
+      let row = {};
+      const text = parsedCsv[i][column];
+      row.text = text;
+
+      // for all features
+      for (let feature of features) {
+        for (let model of feature.models) {
+          for (let shot of feature.shots) {
+            // construct userPrompt and systemPrompt
+            const userPrompt = userPromptBase.replace('<INPUT>', text);
+            let systemPrompt = systemPromptBase;
+            const zeroShotJson = JSON.stringify(JSON.parse(feature.zeroShot));
+            const fewShotJson = JSON.stringify(JSON.parse(feature.fewShot));
+
+            if (shot === "Zero-shot") {
+              systemPrompt = systemPrompt.replace("<CODING GUIDE>", zeroShotJson);
+            } else {
+              systemPrompt = systemPrompt.replace("<CODING GUIDE>", fewShotJson);
+            }
+
+            const promptList = [
+              {"role": "system", "content": systemPrompt},
+              {"role": "user", "content": userPrompt},
+            ];
+
+            // send request to OpenAI
+            const res = await getResponse(apiKey, promptList, model);
+            row[`${feature} ${shot} ${model} code`] = res.code;
+            row[`${feature} ${shot} ${model} explanation`] = res.explanation;
+            await new Promise(r => setTimeout(r, 20000));  // wait            
+          }
+        }
+      }
+      result.push(row);
+    }
+    return result;
+  }
+
+  // send requests to openAI
+  const surveyComplete = async (sender) => {
+    console.log(sender.data);
+
+    const {apiKey, column, features} = sender.data;
+    const csv = sender.data.csv[0];
+    const parsedCsv = await parseSurveyCsv(csv);
+    console.log(parsedCsv);
+
+    const result = await process(apiKey, parsedCsv, column, features);
+    console.log(result);
+  }
+
+  // validate the data on complete
+  const validate =  async (survey, { data, errors, complete }) => {
+    // // validate the api key
+    // const apiKey = data["apiKey"];
+    // if (apiKey) {
+    //   const valid = await validateKey(apiKey);
+    //   if (!valid) errors["apiKey"] = "The key is not valid";
+    // }
+
+    // validate csv and column
+    if (data.csv[0] && data.column) {
+      let parsedCsv;
+      try {
+        parsedCsv = await parseSurveyCsv(data.csv[0]);
+      } catch (err) {
+        errors["csv"] = "Please provide a valid csv file";
+      }
+
+      if (!(data.column in parsedCsv[0])) {
+        errors["column"] = "The column is not in the csv file";
+      }
+      
+    }
+
+    // validate JSON
+    if (data.features) {
+      for (let i = 0; i < data.features.length; ++i) {
+        const zeroShot = data.features[i].zeroShot;
+        const fewShot = data.features[i].fewShot;
+  
+        try {
+          JSON.parse(zeroShot);
+        } catch (err) {
+          errors["features"] = "Please provide a valid JSON for Zero-shot JSON";
+        }
+  
+        try {
+          JSON.parse(fewShot);
+        } catch (err) {
+          errors["features"] = "Please provide a valid JSON for Few-shot JSON";
+        }
+      }
+    }
+
+    complete();
+    
+  }
+
+
   // survey configurations
   const survey = new Model(surveyJson);
   survey.applyTheme(DefaultLight);
+  survey.onComplete.add(surveyComplete);
+  survey.onServerValidateQuestions.add(validate);
+
+  // saving survey data to local storage 
+  survey.onValueChanged.add(saveSurveyData);
+
+  // Restore survey results
+  const prevData = window.localStorage.getItem(storageItemKey) || null;
+  if (prevData) {
+    const data = JSON.parse(prevData);
+    survey.data = data;
+  }
 
   return (
     <Survey model={survey} />
