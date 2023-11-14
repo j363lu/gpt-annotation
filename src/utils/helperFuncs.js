@@ -54,7 +54,7 @@ export const parseSurveyCsv = (csv) => {
 
 // convert an array of objects to a CSV download file
 export const downloadArrayAsCsv = (array, filename) => {
-  // Step 1: Convert array of objects to CSV string
+  // Convert array of objects to CSV string
   if (array.length === 0) return;
 
   const separator = ',';
@@ -64,13 +64,13 @@ export const downloadArrayAsCsv = (array, filename) => {
     ...array.map(row => keys.map(k => row[k]).join(separator)) // Add row data
   ].join('\r\n');
 
-  // Step 2: Create Blob
+  // Create Blob
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
 
-  // Step 3: Create Blob URL
+  // Create Blob URL
   const url = URL.createObjectURL(blob);
 
-  // Step 4: Create Download Link
+  // Create Download Link
   const link = document.createElement('a');
   link.href = url;
   link.setAttribute('download', filename + '.csv');

@@ -5,10 +5,15 @@ import './index.css';
 import SurveyGUI from './components/SurveyGUI';
 import reportWebVitals from './reportWebVitals';
 
+import store from './app/store';
+import { Provider } from 'react-redux';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <SurveyGUI />
+    <Provider store={store}>
+      <SurveyGUI />
+    </Provider>
   </React.StrictMode>
 );
 

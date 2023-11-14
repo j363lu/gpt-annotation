@@ -6,6 +6,12 @@ import { DefaultLight } from 'survey-core/themes/default-light';
 import surveyJson from '../json/survey.json'
 import { parseSurveyCsv, downloadArrayAsCsv } from '../utils/helperFuncs';
 import { getResponse, validateKey } from '../utils/requestGPT';
+import LinearProgressWithLabel from './LinearProgressWithLabel';
+
+import { Container } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { setProgress } from '../app/progressSlice';
+import { setCompleted } from '../app/completedSlice';
 
 // saving survey data to local storage so that particiants can continue on incomplete surveys
 const storageItemKey = "gpt-annotations";
@@ -15,6 +21,14 @@ function saveSurveyData (survey) {
 }
 
 function SurveyGUI() {
+  const dispatch = useDispatch();
+
+  // The page after completed
+  const completedHtml = `
+  <h4>The CSV file will automatically be downloaded once ready</h4>
+  <h4>Please do not refresh or leave the page until the download completes</h4>
+  `;
+
   // given a parsed csv as an array of JSON, process the specified column for the specified
   //   models, zero/few shots and features 
   const process = async (apiKey, parsedCsv, column, features) => {
@@ -27,9 +41,11 @@ function SurveyGUI() {
 
     // for all rows
     for (let i = 0; i < parsedCsv.length; ++i) {
+      dispatch(setProgress(i / parsedCsv.length * 100));
       let row = {};
-      const text = parsedCsv[i][column];
-      row.text = text;
+      let text = parsedCsv[i][column];
+      text = text.replaceAll('"', "'");
+      row.text = `"${text}"`;
       if (!text) continue;
 
       // for all features
@@ -39,12 +55,12 @@ function SurveyGUI() {
             // construct userPrompt and systemPrompt
             const userPrompt = userPromptBase.replace('<INPUT>', text);
             let systemPrompt = systemPromptBase;
-            const zeroShotJson = JSON.stringify(JSON.parse(feature.zeroShot));
-            const fewShotJson = JSON.stringify(JSON.parse(feature.fewShot));
 
             if (shot === "Zero-shot") {
+              const zeroShotJson = JSON.stringify(JSON.parse(feature.zeroShot));
               systemPrompt = systemPrompt.replace("<CODING GUIDE>", zeroShotJson);
             } else {
+              const fewShotJson = JSON.stringify(JSON.parse(feature.fewShot));
               systemPrompt = systemPrompt.replace("<CODING GUIDE>", fewShotJson);
             }
 
@@ -58,12 +74,13 @@ function SurveyGUI() {
             console.log(res);
             row[`${feature.featureName} ${shot} ${model} code`] = res.code;
             row[`${feature.featureName} ${shot} ${model} explanation`] = res.explanation;
-            // await new Promise(r => setTimeout(r, 20000));  // wait            
+            // await new Promise(r => setTimeout(r, 2000));  // wait            
           }
         }
       }
       result.push(row);
     }
+    dispatch(setProgress(100));
     return result;
   }
 
@@ -119,16 +136,20 @@ function SurveyGUI() {
         const zeroShot = data.features[i].zeroShot;
         const fewShot = data.features[i].fewShot;
   
-        try {
-          JSON.parse(zeroShot);
-        } catch (err) {
-          errors["features"] = "Please provide a valid JSON for Zero-shot JSON";
+        if (zeroShot) {
+          try {
+            JSON.parse(zeroShot);
+          } catch (err) {
+            errors["features"] = "Please provide a valid JSON for Zero-shot JSON";
+          }
         }
-  
-        try {
-          JSON.parse(fewShot);
-        } catch (err) {
-          errors["features"] = "Please provide a valid JSON for Few-shot JSON";
+
+        if (fewShot) {
+          try {
+            JSON.parse(fewShot);
+          } catch (err) {
+            errors["features"] = "Please provide a valid JSON for Few-shot JSON";
+          }
         }
       }
     }
@@ -142,7 +163,9 @@ function SurveyGUI() {
   const survey = new Model(surveyJson);
   survey.applyTheme(DefaultLight);
   survey.onComplete.add(surveyComplete);
+  survey.onComplete.add(() => {dispatch(setCompleted(true))});
   survey.onServerValidateQuestions.add(validate);
+  survey.completedHtml = completedHtml;
 
   // saving survey data to local storage 
   survey.onValueChanged.add(saveSurveyData);
@@ -155,7 +178,12 @@ function SurveyGUI() {
   }
 
   return (
+    <>
     <Survey model={survey} />
+    <Container maxWidth="md">
+      <LinearProgressWithLabel />
+    </Container>
+    </>
   );
 }
 
