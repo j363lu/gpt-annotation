@@ -1,12 +1,8 @@
 import OpenAI from "openai";
 
-export const validateKey = async (apiKey) => {  
-  try {
-    await requestGPT(apiKey, [])
-  } catch (err) {
-    if (err.message.includes("401")) return false;
-  }
-  return true;
+export const validateKey = async (apiKey) => { 
+  const result = await requestGPT(apiKey, [], "gpt-3.5-turbo", 0, 0);
+  console.log(result);
 }
 
 // returns a completion object
@@ -17,7 +13,7 @@ const requestGPT = async (apiKey, promptList, model="gpt-3.5-turbo", temperature
     dangerouslyAllowBrowser: true,
     maxRetries: maxTries
   });
-  
+
   // generate response
   const completion = await openai.chat.completions.create({
     messages: promptList,

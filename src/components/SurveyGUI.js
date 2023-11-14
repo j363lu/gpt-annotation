@@ -4,7 +4,7 @@ import 'survey-core/defaultV2.min.css';
 import { DefaultLight } from 'survey-core/themes/default-light';
 
 import surveyJson from '../json/survey.json'
-import { parseSurveyCsv } from '../utils/helperFuncs';
+import { parseSurveyCsv, downloadArrayAsCsv } from '../utils/helperFuncs';
 import { getResponse, validateKey } from '../utils/requestGPT';
 
 // saving survey data to local storage so that particiants can continue on incomplete surveys
@@ -30,6 +30,7 @@ function SurveyGUI() {
       let row = {};
       const text = parsedCsv[i][column];
       row.text = text;
+      if (!text) continue;
 
       // for all features
       for (let feature of features) {
@@ -54,9 +55,10 @@ function SurveyGUI() {
 
             // send request to OpenAI
             const res = await getResponse(apiKey, promptList, model);
-            row[`${feature} ${shot} ${model} code`] = res.code;
-            row[`${feature} ${shot} ${model} explanation`] = res.explanation;
-            await new Promise(r => setTimeout(r, 20000));  // wait            
+            console.log(res);
+            row[`${feature.featureName} ${shot} ${model} code`] = res.code;
+            row[`${feature.featureName} ${shot} ${model} explanation`] = res.explanation;
+            // await new Promise(r => setTimeout(r, 20000));  // wait            
           }
         }
       }
@@ -75,31 +77,40 @@ function SurveyGUI() {
     console.log(parsedCsv);
 
     const result = await process(apiKey, parsedCsv, column, features);
-    console.log(result);
+    downloadArrayAsCsv(result, "result");
   }
 
   // validate the data on complete
   const validate =  async (survey, { data, errors, complete }) => {
-    // // validate the api key
+    // validate the api key
     // const apiKey = data["apiKey"];
     // if (apiKey) {
-    //   const valid = await validateKey(apiKey);
-    //   if (!valid) errors["apiKey"] = "The key is not valid";
+    //   try {
+    //     await validateKey(apiKey);
+    //   } catch (err) {
+    //     errors["apiKey"] = err.message;
+    //   }
     // }
 
     // validate csv and column
-    if (data.csv[0] && data.column) {
-      let parsedCsv;
-      try {
-        parsedCsv = await parseSurveyCsv(data.csv[0]);
-      } catch (err) {
-        errors["csv"] = "Please provide a valid csv file";
+    if (data.csv && data.csv[0] && data.column) {
+      // validate file type
+      if (data.csv[0].type !== "text/csv") {
+        errors["csv"] = "Please provide a CSV file"
+      } else {
+        // validate column name
+        let parsedCsv;
+        try {
+          parsedCsv = await parseSurveyCsv(data.csv[0]);
+          if (!parsedCsv || !parsedCsv[0]) errors["csv"] = "The CSV file is empty"
+        } catch (err) {
+          errors["csv"] = "Please provide a valid CSV file";
+        }
+  
+        if (parsedCsv && parsedCsv[0] && !(data.column in parsedCsv[0])) {
+          errors["column"] = "The column is not in the csv file";
+        }
       }
-
-      if (!(data.column in parsedCsv[0])) {
-        errors["column"] = "The column is not in the csv file";
-      }
-      
     }
 
     // validate JSON

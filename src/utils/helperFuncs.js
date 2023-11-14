@@ -44,7 +44,39 @@ export const parseSurveyCsv = (csv) => {
         resolve(results.data);  
         // results.data is an array of objects
         // Each object is a row in the CSV with key-value pairs
+      },
+      error: (error) => {
+        throw Error("Error when parsing CSV");
       }
     });
   });
+}
+
+// convert an array of objects to a CSV download file
+export const downloadArrayAsCsv = (array, filename) => {
+  // Step 1: Convert array of objects to CSV string
+  if (array.length === 0) return;
+
+  const separator = ',';
+  const keys = Object.keys(array[0]);
+  const csvContent = [
+    keys.join(separator), // Add column headers (keys)
+    ...array.map(row => keys.map(k => row[k]).join(separator)) // Add row data
+  ].join('\r\n');
+
+  // Step 2: Create Blob
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+  // Step 3: Create Blob URL
+  const url = URL.createObjectURL(blob);
+
+  // Step 4: Create Download Link
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', filename + '.csv');
+  document.body.appendChild(link);
+
+  // Step 5: Initiate Download
+  link.click();
+  document.body.removeChild(link);
 }
