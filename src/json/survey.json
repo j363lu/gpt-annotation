@@ -29,8 +29,8 @@
         {
           "type": "text",
           "name": "column",
-          "title": "Column name",
-          "description": "Please enter the column name in the CSV file containing text to be annotated",
+          "title": "Text Column",
+          "description": "Please enter the column name in the CSV file containing the text to be annotated",
           "hideNumber": true,
           "isRequired": true,
           "requiredErrorText": "Please specify the column name in the CSV file"
@@ -57,6 +57,13 @@
               "requiredErrorText": "Please enter the name of the feature"
             },
             {
+              "type": "comment",
+              "name": "featureDefinition",
+              "title": "Definition",
+              "description": "Please provide the definition of the feature",
+              "isRequired": true
+            },
+            {
               "type": "checkbox",
               "name": "models",
               "title": "Models",
@@ -64,7 +71,16 @@
               "hideNumber": true,
               "isRequired": true,
               "requiredErrorText": "Please select at least one model",
-              "choices": ["gpt-3.5-turbo", "gpt-4"],
+              "choices": [
+                {
+                  "value": "gpt-3.5-turbo",
+                  "text": "gpt-3.5-turbo-1106"
+                },
+                {
+                  "value": "gpt-4-turbo",
+                  "text": "gpt-4-1106-preview"
+                }
+              ],
               "maxSelectedChoices": "",
               "minSelectedChoices": ""
             },
@@ -81,22 +97,112 @@
               "minSelectedChoices": ""
             },
             {
-              "type": "comment",
-              "name": "zeroShot",
-              "visible": false,
-              "visibleIf": "{panel.shots} contains 'Zero-shot'",
-              "title": "Zero-shot JSON",
-              "description": "Provide a JSON for definition of the feature",
-              "requiredIf": "{features[0].shots} contains 'Zero-shot'"
+              "type": "multipletext",
+              "name": "presentExample1",
+              "visibleIf": "{panel.shots} contains 'Few-shot'",
+              "title": "\"Present\" example 1",
+              "description": "Please provide an example and explanation for the presence of the feature",
+              "requiredIf": "{panel.shots} contains 'Few-shot'",
+              "items": [
+                {
+                  "name": "example",
+                  "title": "example"
+                },
+                {
+                  "name": "explanation",
+                  "title": "explanation"
+                }
+              ]
             },
             {
-              "type": "comment",
-              "name": "fewShot",
-              "visible": false,
-              "visibleIf": "{features[0].shots} contains 'Few-shot'",
-              "title": "Few-shot JSON",
-              "description": "Provide a JSON for definition and examples of the feature",
-              "requiredIf": "{features[0].shots} contains 'Few-shot'"
+              "type": "multipletext",
+              "name": "presentExample2",
+              "visibleIf": "{panel.shots} contains 'Few-shot'",
+              "title": "\"Present\" example 2",
+              "description": "Please provide an example and explanation for the presence of the feature",
+              "requiredIf": "{panel.shots} contains 'Few-shot'",
+              "items": [
+                {
+                  "name": "example",
+                  "title": "example"
+                },
+                {
+                  "name": "explanation",
+                  "title": "explanation"
+                }
+              ]
+            },
+            {
+              "type": "multipletext",
+              "name": "presentExample3",
+              "visibleIf": "{panel.shots} contains 'Few-shot'",
+              "title": "\"Present\" example 3",
+              "description": "Please provide an example and explanation for the presence of the feature",
+              "requiredIf": "{panel.shots} contains 'Few-shot'",
+              "items": [
+                {
+                  "name": "example",
+                  "title": "example"
+                },
+                {
+                  "name": "explanation",
+                  "title": "explanation"
+                }
+              ]
+            },
+            {
+              "type": "multipletext",
+              "name": "absentExample1",
+              "visibleIf": "{panel.shots} contains 'Few-shot'",
+              "title": "\"Absent\" example 1",
+              "description": "Please provide an example and explanation for the absence of the feature",
+              "requiredIf": "{panel.shots} contains 'Few-shot'",
+              "items": [
+                {
+                  "name": "example",
+                  "title": "example"
+                },
+                {
+                  "name": "explanation",
+                  "title": "explanation"
+                }
+              ]
+            },
+            {
+              "type": "multipletext",
+              "name": "absentExample2",
+              "visibleIf": "{panel.shots} contains 'Few-shot'",
+              "title": "\"Absent\" example 2",
+              "description": "Please provide an example and explanation for the absence of the feature",
+              "requiredIf": "{panel.shots} contains 'Few-shot'",
+              "items": [
+                {
+                  "name": "example",
+                  "title": "example"
+                },
+                {
+                  "name": "explanation",
+                  "title": "explanation"
+                }
+              ]
+            },
+            {
+              "type": "multipletext",
+              "name": "absentExample3",
+              "visibleIf": "{panel.shots} contains 'Few-shot'",
+              "title": "\"Absent\" example 3",
+              "description": "Please provide an example and explanation for the absence of the feature",
+              "requiredIf": "{panel.shots} contains 'Few-shot'",
+              "items": [
+                {
+                  "name": "example",
+                  "title": "example"
+                },
+                {
+                  "name": "explanation",
+                  "title": "explanation"
+                }
+              ]
             },
             {
               "type": "radiogroup",
@@ -106,34 +212,118 @@
               "hideNumber": true,
               "isRequired": true,
               "requiredErrorText": "Please select a classification type",
-              "choices": [
-                "Binary",
+              "choices": ["Binary", "Ordinal"]
+            },
+            {
+              "type": "multipletext",
+              "name": "lowExample1",
+              "visibleIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
+              "title": "\"Low\" example 1",
+              "description": "Please provide an example and explanation for the presence of low amount of the feature",
+              "requiredIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
+              "items": [
                 {
-                  "value": "Ordinal",
-                  "text": "Ternary"
+                  "name": "example",
+                  "title": "example"
+                },
+                {
+                  "name": "explanation",
+                  "title": "explanation"
                 }
               ]
             },
             {
-              "type": "comment",
-              "name": "ternaryZeroShot",
-              "visible": false,
-              "visibleIf": "{features[0].shots} contains 'Zero-shot' and {panel.classification} = 'Ordinal'",
-              "title": "Ternary Zero-shot JSON",
-              "description": "Provide a JSON for a binary classification of \"present\"  labels",
-              "requiredIf": "{features[0].shots} contains 'Zero-shot' and {panel.classification} = 'Ordinal'"
+              "type": "multipletext",
+              "name": "lowExample2",
+              "visibleIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
+              "title": "\"Low\" example 2",
+              "description": "Please provide an example and explanation for the presence of low amount of the feature",
+              "requiredIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
+              "items": [
+                {
+                  "name": "example",
+                  "title": "example"
+                },
+                {
+                  "name": "explanation",
+                  "title": "explanation"
+                }
+              ]
             },
             {
-              "type": "comment",
-              "name": "ternaryFewShot",
-              "visible": false,
-              "visibleIf": "{features[0].shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
-              "title": "Ternary Few-shot JSON",
-              "description": "Provide a JSON with a definition and examples for a binary classification of \"present\"  labels",
-              "requiredIf": "{features[0].shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'"
+              "type": "multipletext",
+              "name": "lowExample3",
+              "visibleIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
+              "title": "\"Low\" example 3",
+              "description": "Please provide an example and explanation for the presence of low amount of the feature",
+              "requiredIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
+              "items": [
+                {
+                  "name": "example",
+                  "title": "example"
+                },
+                {
+                  "name": "explanation",
+                  "title": "explanation"
+                }
+              ]
+            },
+            {
+              "type": "multipletext",
+              "name": "highExample1",
+              "visibleIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
+              "title": "\"High\" example 1",
+              "description": "Please provide an example and explanation for the presence of high amount of the feature",
+              "requiredIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
+              "items": [
+                {
+                  "name": "example",
+                  "title": "example"
+                },
+                {
+                  "name": "explanation",
+                  "title": "explanation"
+                }
+              ]
+            },
+            {
+              "type": "multipletext",
+              "name": "highExample2",
+              "visibleIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
+              "title": "\"High\" example 2",
+              "description": "Please provide an example and explanation for the presence of high amount of the feature",
+              "requiredIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
+              "items": [
+                {
+                  "name": "example",
+                  "title": "example"
+                },
+                {
+                  "name": "explanation",
+                  "title": "explanation"
+                }
+              ]
+            },
+            {
+              "type": "multipletext",
+              "name": "highExample3",
+              "visibleIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
+              "title": "\"High\" example 3",
+              "description": "Please provide an example and explanation for the presence of high amount of the feature",
+              "requiredIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
+              "items": [
+                {
+                  "name": "example",
+                  "title": "example"
+                },
+                {
+                  "name": "explanation",
+                  "title": "explanation"
+                }
+              ]
             }
           ],
-          "templateTabTitle": "feature {panelIndex}",
+          "templateTabTitle": "{panel.featureName}",
           "panelCount": 1,
           "maxPanelCount": 10,
           "confirmDelete": true,

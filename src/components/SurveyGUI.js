@@ -4,7 +4,7 @@ import 'survey-core/defaultV2.min.css';
 import { DefaultLight } from 'survey-core/themes/default-light';
 
 import surveyJson from '../json/survey.json'
-import { parseSurveyCsv, downloadArrayAsCsv } from '../utils/helperFuncs';
+import { parseSurveyCsv, downloadArrayAsCsv, zeroShotJson, fewShotJson } from '../utils/helperFuncs';
 import { getResponse, validateKey } from '../utils/requestGPT';
 import LinearProgressWithLabel from './LinearProgressWithLabel';
 
@@ -56,12 +56,17 @@ function SurveyGUI() {
             const userPrompt = userPromptBase.replace('<INPUT>', text);
             let systemPrompt = systemPromptBase;
 
+            // construct system prompt depending on shot
+            let zeroShot;
+            let fewShot;
             if (shot === "Zero-shot") {
-              const zeroShotJson = JSON.stringify(JSON.parse(feature.zeroShot));
-              systemPrompt = systemPrompt.replace("<CODING GUIDE>", zeroShotJson);
+              zeroShot = zeroShotJson(feature);
+              zeroShot = JSON.stringify(zeroShot);
+              systemPrompt = systemPrompt.replace("<CODING GUIDE>", zeroShot);
             } else {
-              const fewShotJson = JSON.stringify(JSON.parse(feature.fewShot));
-              systemPrompt = systemPrompt.replace("<CODING GUIDE>", fewShotJson);
+              fewShot = fewShotJson(feature);
+              fewShot = JSON.stringify(fewShot);
+              systemPrompt = systemPrompt.replace("<CODING GUIDE>", fewShot);
             }
 
             const promptList = [
@@ -73,8 +78,12 @@ function SurveyGUI() {
             const res = await getResponse(apiKey, promptList, model);
             console.log(res);
             row[`${feature.featureName} ${shot} ${model} code`] = res.code;
-            row[`${feature.featureName} ${shot} ${model} explanation`] = res.explanation;
-            // await new Promise(r => setTimeout(r, 2000));  // wait            
+            row[`${feature.featureName} ${shot} ${model} explanation`] = res.explanation;     
+            
+            // further classify present into low and high
+            if (res.code === "present") {
+
+            }
           }
         }
       }
@@ -126,30 +135,6 @@ function SurveyGUI() {
   
         if (parsedCsv && parsedCsv[0] && !(data.column in parsedCsv[0])) {
           errors["column"] = "The column is not in the csv file";
-        }
-      }
-    }
-
-    // validate JSON
-    if (data.features) {
-      for (let i = 0; i < data.features.length; ++i) {
-        const zeroShot = data.features[i].zeroShot;
-        const fewShot = data.features[i].fewShot;
-  
-        if (zeroShot) {
-          try {
-            JSON.parse(zeroShot);
-          } catch (err) {
-            errors["features"] = "Please provide a valid JSON for Zero-shot JSON";
-          }
-        }
-
-        if (fewShot) {
-          try {
-            JSON.parse(fewShot);
-          } catch (err) {
-            errors["features"] = "Please provide a valid JSON for Few-shot JSON";
-          }
         }
       }
     }

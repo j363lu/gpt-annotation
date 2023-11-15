@@ -80,3 +80,45 @@ export const downloadArrayAsCsv = (array, filename) => {
   link.click();
   document.body.removeChild(link);
 }
+
+// reconstruct the JSON so that the example always comes before explanation after JSON.stringify
+const example = (input) => {
+  return {
+    "example": input.example,
+    "explanation": input.explanation
+  }
+}
+
+// given the feature object from the survey, construct examples JSON for binary classification 
+const examplesJson = (feature) => {
+  return {
+    "present": [
+      example(feature.presentExample1), 
+      example(feature.presentExample2), 
+      example(feature.presentExample3)
+    ],
+    "absent": [
+      example(feature.absentExample1), 
+      example(feature.absentExample2), 
+      example(feature.absentExample3)
+    ]
+  };
+}
+
+// construct JSON for zero-shot
+export const zeroShotJson = (feature) => {
+  return {
+    "label": `<${feature.featureName}>`,
+    "definition": feature.featureDefinition
+  };
+}
+
+// construct JSON for few-shot
+export const fewShotJson = (feature) => {
+  const zero = zeroShotJson(feature);
+  const examples = examplesJson(feature);
+  return {
+    ...zero,
+    "examples": examples
+  };
+}
