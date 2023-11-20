@@ -1,0 +1,34 @@
+{
+  "label": "<Intellectual Humility>",
+  "definition": "This category concerns the person recognizing limits of their knowledge. The writer acknowledges that they may not have sufficient knowledge about a particular situation or a person's behavior to make a comprehensive judgment or response. The statement  mentions how additional information could influence their decision and/or change their opinion of the situation. The writer indicates in the statement that they may lack knowledge about the factors that led to the behavior of the individuals involved in the event behave in a particular way.",
+  "examples": {
+    "low": [
+      {
+        "example": "I wonder if there's something more going on than what I've been told.",
+        "explanation": "States that they acknowledge a potential gap in their understanding but lacks elaboration."
+      },
+      {
+        "example": "Their recent behavior is puzzling; I might not have the full picture.",
+        "explanation": "This acknowledges a gap in understanding but does not express a pursuit of further information or how it might influence a reassessment of the situation."
+      },
+      {
+        "example": "I'm not sure why they are underperforming, but it could be due to reasons outside my knowledge.",
+        "explanation": "While acknowledging uncertainty, this example does not delve into how additional knowledge could alter the perception or decision-making regarding the employee's situation."
+      }
+    ],
+    "high": [
+      {
+        "example": "I know that I cannot fully understand the situation as it's likely stressful and overwhelming. I think it's important to be more informed on the details of their circumstances to make a better decision and resolve this issue.",
+        "explanation": "States that they're aware of their limited knowledge and expresses the need for additional information."
+      },
+      {
+        "example": "Given my limited insight into their personal life, I acknowledge that I might not fully grasp the reasons behind their underperformance. Gathering more information might lead to a different approach to help them.",
+        "explanation": "Here, the writer expresses an understanding of their knowledge limitations and indicates how acquiring additional information could alter their approach to the issue."
+      },
+      {
+        "example": "I'm aware that my perspective on their declining sales figures is incomplete. Before making any decisions, it's crucial to understand the external factors that might be influencing their performance.",
+        "explanation": "This example demonstrates intellectual humility by acknowledging the incomplete nature of the current understanding and the need to explore external factors for a more informed decision-making process."
+      }
+    ]
+  }
+}

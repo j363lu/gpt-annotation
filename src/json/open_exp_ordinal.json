@@ -1,0 +1,34 @@
+{
+  "label": "<Open-mindedness to Change>",
+  "definition": "This category concerns the writer's openness to multiple possible outcomes or trajectories in a given situation. The writer acknowledges the idea of change in the future and perceives the world as being in flux or actively explores the idea of change in the future. They refer to two or more potential outcomes and establish an explicit link between them, demonstrating an understanding that the situation could unfold in various ways.",
+  "examples": {
+    "low": [
+      {
+        "example": "I realized that if I dismiss their situation and don't show understanding, they may end up leaving work and hinder the progress of the projects assigned to them.",
+        "explanation": "The writer envisages multiple potential outcomes depending on how they handle the situation, showing an openness to change and a recognition of the future's uncertainty, but no elaboration is provided."
+      },
+      {
+        "example": "If I don't address their performance issues, it might lead to further decline in their sales figures.",
+        "explanation": "This statement acknowledges a potential outcome but lacks exploration of multiple possible trajectories or changes in the situation."
+      },
+      {
+        "example": "If we continue without addressing these issues, it could negatively impact our team's morale.",
+        "explanation": "This acknowledges a possible future consequence but does not explore the idea of change or multiple outcomes in depth."
+      }
+    ],
+    "high": [
+      {
+        "example": "I wonder if I express my sympathy and show them I'm capable of helping them through tough times, would they come to me sooner when they're struggling? If I can handle this situation well, it might improve their progress and create a positive ripple effect in the research lab.",
+        "explanation": "The writer contemplates multiple potential scenarios and their implications, demonstrating openness to change and acknowledging the future's fluidity."
+      },
+      {
+        "example": "If I intervene and provide additional training, it could boost their sales, but there's also a possibility that they might need a different kind of support, like counseling or a mentor.",
+        "explanation": "This example illustrates openness to multiple outcomes: the effectiveness of additional training or the need for alternative forms of support."
+      },
+      {
+        "example": "Should I decide to give them another chance, they might improve with the right guidance, or it might reveal if they're truly unfit for this role, prompting a reassessment of our hiring practices.",
+        "explanation": "Here, the writer acknowledges the possibility of improvement with guidance or the alternative outcome of reassessing hiring practices, demonstrating an understanding of various possible future changes."
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "label": "<Diverse Perspectives>",
+  "definition": "This category concerns the person considering diverse perspectives on the issue. The writer considers how past, present, or future events might be viewed by the other party involved in the scenario. The writer attempts to understand the other party’s feelings and motivations, and the reasoning behind them. The writer shows effort in trying to take the perspective of others in the scenario.",
+  "examples": {
+    "low": [
+      {
+        "example": "He's not a bad employee, he's going through a hard time.",
+        "explanation": "The person acknowledges different viewpoints on the issue, particularly considering the personal struggles the employee may be facing, thus showing an understanding of the employee's feelings and motivations, but it lacks elaboration."
+      },
+      {
+        "example": "I think they might be stressed, which is affecting their work.",
+        "explanation": "This statement acknowledges the employee's potential stress but lacks depth in exploring their feelings, motivations, or how they might perceive the situation."
+      },
+      {
+        "example": "It's possible that workload is overwhelming for them, leading to their poor performance.",
+        "explanation": "This acknowledges a possible reason for the employee's behavior but does not fully explore their feelings or motivations from their perspective."
+      }
+    ],
+    "high": [
+      {
+        "example": "I tried to understand how they've been feeling. They could be depressed or burnt out, and were I in their shoes, I might also be hesitant to discuss these kinds of problems with my manager.",
+        "explanation": "States that they considered the other person's perspective and viewpoints, including different ways how the person may have felt in this situation and why they did what they did."
+      },
+      {
+        "example": "I tried to see things from their angle – maybe they're not just underperforming but also feeling unsupported or unappreciated, which I can imagine would be demotivating.",
+        "explanation": "This statement shows an attempt to understand the employee's feelings of possibly being unsupported or unappreciated, reflecting on how such feelings could influence their behavior."
+      },
+      {
+        "example": "I've thought about how they might be struggling with balancing work and personal life. If I were in their situation, juggling these responsibilities could be quite challenging and impact my work.",
+        "explanation": "Here, the writer empathetically explores the employee's potential struggles with work-life balance and relates to how it might feel in their position."
+      }
+    ]
+  }
+}

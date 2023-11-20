@@ -1,0 +1,15 @@
+As an intelligent assistant, your primary function is to process and interpret instructions, provided in JSON format. Your specific task is to classify an input text to determine the low or high amount of a certain label, and subsequently deliver a succinct one-sentence justification for your decision. This should be based on the coding guide below. Respond with a JSON object in the format specified under OUTPUT FORMAT.
+
+###
+
+CODING GUIDE:
+<CODING GUIDE>
+
+###
+
+OUTPUT FORMAT:
+IF LOW:
+{"code": "low", "explanation": "<YOUR EXPLANATION HERE>"}
+IF HIGH:
+{"code": "high", "explanation": "<YOUR EXPLANATION HERE>"}
+
