@@ -105,6 +105,21 @@ const examplesJson = (feature) => {
   };
 }
 
+const examplesOrdinalJson = (feature) => {
+  return {
+    "low": [
+      example(feature.lowExample1), 
+      example(feature.lowExample2), 
+      example(feature.lowExample3)
+    ],
+    "high": [
+      example(feature.highExample1), 
+      example(feature.highExample2), 
+      example(feature.highExample3)
+    ]
+  };
+}
+
 // construct JSON for zero-shot
 export const zeroShotJson = (feature) => {
   return {
@@ -117,6 +132,16 @@ export const zeroShotJson = (feature) => {
 export const fewShotJson = (feature) => {
   const zero = zeroShotJson(feature);
   const examples = examplesJson(feature);
+  return {
+    ...zero,
+    "examples": examples
+  };
+}
+
+// construct JSON for few-shot ordinal classification
+export const fewShotOrdinalJson = (feature) => {
+  const zero = zeroShotJson(feature);
+  const examples = examplesOrdinalJson(feature);
   return {
     ...zero,
     "examples": examples

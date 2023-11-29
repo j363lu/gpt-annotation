@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import store from "../app/store";
 
 export const validateKey = async (apiKey) => { 
   const result = await requestGPT(apiKey, [], "gpt-3.5-turbo", 0, 0);
@@ -15,13 +16,22 @@ const requestGPT = async (apiKey, promptList, model="gpt-3.5-turbo", temperature
   });
 
   // generate response
-  const completion = await openai.chat.completions.create({
-    messages: promptList,
-    model: model,
-    temperature: temperature
-  });
+  console.log("Requesting openai...");
+  try {
+    const completion = await openai.chat.completions.create({
+      messages: promptList,
+      model: model,
+      temperature: temperature,
+      response_format: { type: "json_object" },
+    });
+  
+    return completion;
+  } catch (err) {
+    console.log(err);
+    store.dispatch({ type: "error/setErrorOpen", payload: true });
+    store.dispatch({ type: "error/setErrorMessage", payload: err.message});
+  }
 
-  return completion;
 }
 
 // parse the response to a string

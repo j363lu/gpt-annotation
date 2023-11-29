@@ -4,9 +4,10 @@ import 'survey-core/defaultV2.min.css';
 import { DefaultLight } from 'survey-core/themes/default-light';
 
 import surveyJson from '../json/survey.json'
-import { parseSurveyCsv, downloadArrayAsCsv, zeroShotJson, fewShotJson } from '../utils/helperFuncs';
+import { parseSurveyCsv, downloadArrayAsCsv, zeroShotJson, fewShotJson, fewShotOrdinalJson } from '../utils/helperFuncs';
 import { getResponse, validateKey } from '../utils/requestGPT';
 import LinearProgressWithLabel from './LinearProgressWithLabel';
+import ErrorSnackbar from './ErrorSnackbar';
 
 import { Container } from '@mui/material';
 import { useDispatch } from 'react-redux';
@@ -38,6 +39,9 @@ function SurveyGUI() {
 
     const systemPromptBase = await fetch('/prompts/system_base.txt')
     .then(res => res.text());
+
+    const systemPromptBaseOrdinal = await fetch('/prompts/system_base_ordinal.txt')
+    .then(res => res.text())
 
     // for all rows
     for (let i = 0; i < parsedCsv.length; ++i) {
@@ -75,14 +79,51 @@ function SurveyGUI() {
             ];
 
             // send request to OpenAI
-            const res = await getResponse(apiKey, promptList, model);
-            console.log(res);
-            row[`${feature.featureName} ${shot} ${model} code`] = res.code;
-            row[`${feature.featureName} ${shot} ${model} explanation`] = res.explanation;     
+            let res;
+            try {
+              res = await getResponse(apiKey, promptList, model);
+              console.log(res);
+              row[`${feature.featureName} ${shot} ${model} code`] = res.code;
+              row[`${feature.featureName} ${shot} ${model} explanation`] = `"${res.explanation}"`;    
+            } catch (err) {
+              res = {code: "NA", explanation: "NA"};
+              row[`${feature.featureName} ${shot} ${model} code`] = res.code;
+              row[`${feature.featureName} ${shot} ${model} explanation`] = `"${res.explanation}"`;  
+              return result;  
+            }
             
-            // further classify present into low and high
-            if (res.code === "present") {
+            /************ further classify present into low and high ************/ 
+            if (res.code === "present" && feature.classification === "Ordinal") {
+              let systemPromptOrdinal = systemPromptBaseOrdinal;
+              let fewShotOrdinal;
 
+              // zero-shot or few-shot
+              if (shot === "Zero-shot") {
+                systemPromptOrdinal = systemPromptOrdinal.replace("<CODING GUIDE>", zeroShot);
+              } else {
+                fewShotOrdinal = fewShotOrdinalJson(feature);
+                fewShotOrdinal = JSON.stringify(fewShotOrdinal);
+                systemPromptOrdinal = systemPromptOrdinal.replace("<CODING GUIDE>", fewShotOrdinal);
+              }
+
+              const promptListOrdinal = [
+                {"role": "system", "content": systemPromptOrdinal},
+                {"role": "user", "content": userPrompt},
+              ];
+
+              // send request to OpenAI
+              let resOrdinal;
+              try {
+                resOrdinal = await getResponse(apiKey, promptListOrdinal, model);
+                console.log(resOrdinal);
+                row[`${feature.featureName} ${shot} ${model} code`] = resOrdinal.code;
+                row[`${feature.featureName} ${shot} ${model} explanation`] = `"${resOrdinal.explanation}"`;  
+              } catch (err) {
+                resOrdinal = {code: "NA", explanation: "NA"};
+                row[`${feature.featureName} ${shot} ${model} code`] = resOrdinal.code;
+                row[`${feature.featureName} ${shot} ${model} explanation`] = `"${resOrdinal.explanation}"`; 
+                return result; 
+              }
             }
           }
         }
@@ -168,6 +209,7 @@ function SurveyGUI() {
     <Container maxWidth="md">
       <LinearProgressWithLabel />
     </Container>
+    <ErrorSnackbar />
     </>
   );
 }
