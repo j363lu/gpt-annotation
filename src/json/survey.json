@@ -8,7 +8,7 @@
           "type": "text",
           "name": "apiKey",
           "title": "OpenAI API key",
-          "description": "Please enter your OpenAI API Key",
+          "description": "This app runs in your web browser and your request is sent to OpenAI directly. We will not have a copy of your key.",
           "hideNumber": true,
           "isRequired": true,
           "requiredErrorText": "Please enter an OpenAI API Key",
@@ -328,7 +328,7 @@
           "panelCount": 1,
           "maxPanelCount": 10,
           "confirmDelete": true,
-          "confirmDeleteText": "Do you want to delete the feature?",
+          "confirmDeleteText": "Do you want to delete the category?",
           "panelAddText": "New category",
           "renderMode": "tab",
           "tabAlign": "left"

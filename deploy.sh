@@ -1,0 +1,1 @@
+scp -r build/* hwadmin@futurescape.uwaterloo.ca:/var/www/html/ai-coder/
