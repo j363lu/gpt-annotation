@@ -1,4 +1,6 @@
 {
+  "title": "AI Coder",
+  "description": "This web application utilizes OpenAI's GPT-3.5-turbo and GPT-4-turbo models to detect the absence, low amount, or high amount of a certain feature in some input text. Given the definition and some examples of a feature, the large language models will examine each input text and determine whether the feature is present or not. You will need to provide a CSV file with a column containing the input, together with the definition of the feature, and the result will be downloaded as a CSV file.",
   "logoPosition": "right",
   "pages": [
     {
@@ -8,7 +10,7 @@
           "type": "text",
           "name": "apiKey",
           "title": "OpenAI API key",
-          "description": "This app runs in your web browser and your request is sent to OpenAI directly. We will not have a copy of your key.",
+          "description": "An OpenAI API key is needed to run the app, which runs in your web browser, and the requests are sent to OpenAI directly. We will not have a copy of your key.",
           "hideNumber": true,
           "isRequired": true,
           "requiredErrorText": "Please enter an OpenAI API Key",
@@ -18,7 +20,7 @@
           "type": "file",
           "name": "csv",
           "title": "CSV File",
-          "description": "Please choose a CSV file",
+          "description": "Please choose a CSV file with a column containing the text to be annotated.",
           "hideNumber": true,
           "isRequired": true,
           "requiredErrorText": "Please choose a CSV file",
@@ -44,15 +46,14 @@
         {
           "type": "paneldynamic",
           "name": "features",
-          "title": "Categories",
-          "description": "",
+          "title": "Features",
           "hideNumber": true,
           "templateElements": [
             {
               "type": "text",
               "name": "featureName",
-              "title": "Category name",
-              "description": "What is the name of the category?",
+              "title": "Feature name",
+              "description": "What is the name of the feature?",
               "hideNumber": true,
               "isRequired": true,
               "requiredErrorText": "Please enter the name of the feature"
@@ -61,26 +62,21 @@
               "type": "comment",
               "name": "featureDefinition",
               "title": "Definition",
-              "description": "Please provide the definition of the category",
+              "description": "Please provide the definition of the feature",
               "isRequired": true
             },
             {
               "type": "checkbox",
               "name": "models",
               "title": "Models",
-              "description": "Which model(s) to use?",
+              "description": "Which model(s) to use? You may select multiple models and the results from different models will be saved to different columns in the resultant CSV file",
               "hideNumber": true,
               "isRequired": true,
               "requiredErrorText": "Please select at least one model",
               "choices": [
-                {
-                  "value": "gpt-3.5-turbo-1106",
-                  "text": "gpt-3.5-turbo-1106"
-                },
-                {
-                  "value": "gpt-4-1106-preview",
-                  "text": "gpt-4-1106-preview"
-                }
+                "gpt-3.5-turbo-1106",
+                "gpt-4-1106-preview",
+                "openchat3.5"
               ],
               "maxSelectedChoices": "",
               "minSelectedChoices": ""
@@ -89,7 +85,7 @@
               "type": "checkbox",
               "name": "shots",
               "title": "Zero-shot/Few-shot",
-              "description": "Zero-shot or Few-shot?",
+              "description": "You may choose to use zero-shot classification or few-shot classification or both when determining the absence or presence of this feature. If you select few-shot classification, you will need to provide three examples and explanations for presence and absence of the feature",
               "hideNumber": true,
               "isRequired": true,
               "requiredErrorText": "Please select at least one option",
@@ -102,7 +98,7 @@
               "name": "presentExample1",
               "visibleIf": "{panel.shots} contains 'Few-shot'",
               "title": "\"Present\" example 1",
-              "description": "Please provide an example and explanation for the presence of the category",
+              "description": "Please provide an example and explanation for the presence of the feature",
               "requiredIf": "{panel.shots} contains 'Few-shot'",
               "items": [
                 {
@@ -120,7 +116,7 @@
               "name": "presentExample2",
               "visibleIf": "{panel.shots} contains 'Few-shot'",
               "title": "\"Present\" example 2",
-              "description": "Please provide an example and explanation for the presence of the category",
+              "description": "Please provide an example and explanation for the presence of the feature",
               "requiredIf": "{panel.shots} contains 'Few-shot'",
               "items": [
                 {
@@ -138,7 +134,7 @@
               "name": "presentExample3",
               "visibleIf": "{panel.shots} contains 'Few-shot'",
               "title": "\"Present\" example 3",
-              "description": "Please provide an example and explanation for the presence of the category",
+              "description": "Please provide an example and explanation for the presence of the feature",
               "requiredIf": "{panel.shots} contains 'Few-shot'",
               "items": [
                 {
@@ -156,7 +152,7 @@
               "name": "absentExample1",
               "visibleIf": "{panel.shots} contains 'Few-shot'",
               "title": "\"Absent\" example 1",
-              "description": "Please provide an example and explanation for the absence of the category",
+              "description": "Please provide an example and explanation for the absence of the feature",
               "requiredIf": "{panel.shots} contains 'Few-shot'",
               "items": [
                 {
@@ -174,7 +170,7 @@
               "name": "absentExample2",
               "visibleIf": "{panel.shots} contains 'Few-shot'",
               "title": "\"Absent\" example 2",
-              "description": "Please provide an example and explanation for the absence of the category",
+              "description": "Please provide an example and explanation for the absence of the feature",
               "requiredIf": "{panel.shots} contains 'Few-shot'",
               "items": [
                 {
@@ -192,7 +188,7 @@
               "name": "absentExample3",
               "visibleIf": "{panel.shots} contains 'Few-shot'",
               "title": "\"Absent\" example 3",
-              "description": "Please provide an example and explanation for the absence of the category",
+              "description": "Please provide an example and explanation for the absence of the feature",
               "requiredIf": "{panel.shots} contains 'Few-shot'",
               "items": [
                 {
@@ -208,19 +204,28 @@
             {
               "type": "radiogroup",
               "name": "classification",
-              "title": "Classification type",
-              "description": "What is the classification type",
+              "title": "Classification categories",
+              "description": "If the feature is present in the input text, it can be further classified into \"low\" and \"high\", corresponding to the detection of low and high amount of the feature. If you select \"absent, low, high\" and few-shot classification, you will need to provide three examples and explanations for low and high amount of the feature",
               "hideNumber": true,
               "isRequired": true,
               "requiredErrorText": "Please select a classification type",
-              "choices": ["Binary", "Ordinal"]
+              "choices": [
+                {
+                  "value": "Binary",
+                  "text": "absent, present"
+                },
+                {
+                  "value": "Ordinal",
+                  "text": "absent, low, high"
+                }
+              ]
             },
             {
               "type": "multipletext",
               "name": "lowExample1",
               "visibleIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
               "title": "\"Low\" example 1",
-              "description": "Please provide an example and explanation for the presence of low amount of the category",
+              "description": "Please provide an example and explanation for the presence of low amount of the feature",
               "requiredIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
               "items": [
                 {
@@ -238,7 +243,7 @@
               "name": "lowExample2",
               "visibleIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
               "title": "\"Low\" example 2",
-              "description": "Please provide an example and explanation for the presence of low amount of the category",
+              "description": "Please provide an example and explanation for the presence of low amount of the feature",
               "requiredIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
               "items": [
                 {
@@ -256,7 +261,7 @@
               "name": "lowExample3",
               "visibleIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
               "title": "\"Low\" example 3",
-              "description": "Please provide an example and explanation for the presence of low amount of the category",
+              "description": "Please provide an example and explanation for the presence of low amount of the feature",
               "requiredIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
               "items": [
                 {
@@ -274,7 +279,7 @@
               "name": "highExample1",
               "visibleIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
               "title": "\"High\" example 1",
-              "description": "Please provide an example and explanation for the presence of high amount of the category",
+              "description": "Please provide an example and explanation for the presence of high amount of the feature",
               "requiredIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
               "items": [
                 {
@@ -292,7 +297,7 @@
               "name": "highExample2",
               "visibleIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
               "title": "\"High\" example 2",
-              "description": "Please provide an example and explanation for the presence of high amount of the category",
+              "description": "Please provide an example and explanation for the presence of high amount of the feature",
               "requiredIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
               "items": [
                 {
@@ -310,7 +315,7 @@
               "name": "highExample3",
               "visibleIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
               "title": "\"High\" example 3",
-              "description": "Please provide an example and explanation for the presence of high amount of the category",
+              "description": "Please provide an example and explanation for the presence of high amount of the feature",
               "requiredIf": "{panel.shots} contains 'Few-shot' and {panel.classification} = 'Ordinal'",
               "items": [
                 {
@@ -328,14 +333,14 @@
           "panelCount": 1,
           "maxPanelCount": 10,
           "confirmDelete": true,
-          "confirmDeleteText": "Do you want to delete the category?",
-          "panelAddText": "New category",
+          "confirmDeleteText": "Do you want to delete the feature?",
+          "panelAddText": "New feature",
           "renderMode": "tab",
           "tabAlign": "left"
         }
       ],
-      "title": "Categories",
-      "description": "Select and configure categories"
+      "title": "Features",
+      "description": "You can have multiple features to be annotated. Their presence in input text will be examined independently, and the results will be saved to different columns of the resultant CSV file."
     }
   ],
   "questionErrorLocation": "bottom",

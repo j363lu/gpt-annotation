@@ -34,13 +34,13 @@ function SurveyGUI() {
   //   models, zero/few shots and features 
   const process = async (apiKey, parsedCsv, column, features) => {
     let result = [];
-    const userPromptBase = await fetch('/prompts/user_base.txt')
+    const userPromptBase = await fetch('/ai-coder/prompts/user_base.txt')
     .then(res => res.text());
 
-    const systemPromptBase = await fetch('/prompts/system_base.txt')
+    const systemPromptBase = await fetch('/ai-coder/prompts/system_base.txt')
     .then(res => res.text());
 
-    const systemPromptBaseOrdinal = await fetch('/prompts/system_base_ordinal.txt')
+    const systemPromptBaseOrdinal = await fetch('/ai-coder/prompts/system_base_ordinal.txt')
     .then(res => res.text())
 
     // for all rows

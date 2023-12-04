@@ -16,16 +16,35 @@ const requestGPT = async (apiKey, promptList, model="gpt-3.5-turbo", temperature
   });
 
   // generate response
-  console.log("Requesting openai...");
   try {
-    const completion = await openai.chat.completions.create({
-      messages: promptList,
-      model: model,
-      temperature: temperature,
-      response_format: { type: "json_object" },
-    });
-  
-    return completion;
+    if (model === "openchat3.5") {
+      console.log("Requesting openchat...");
+      const completion = await fetch(
+        "https://limcheekin-openchat-3-5-gguf.hf.space/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "messages": promptList
+          })
+        }
+      ).then(res => res.json())
+    
+      return completion;
+    } else {
+      console.log("Requesting openai...");
+      const completion = await openai.chat.completions.create({
+        messages: promptList,
+        model: model,
+        temperature: temperature,
+        response_format: { type: "json_object" },
+      });
+    
+      return completion;
+    }
+
   } catch (err) {
     console.log(err);
     store.dispatch({ type: "error/setErrorOpen", payload: true });
