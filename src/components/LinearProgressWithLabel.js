@@ -11,7 +11,7 @@ function LinearProgressWithLabel() {
   const completed = useSelector(selectCompleted);
 
   return (
-    <Box sx={{ display: completed ? 'flex' : "none", alignItems: 'center' }}>
+    <Box sx={{ display: completed ? 'flex' : "none", alignItems: 'center', marginBottom: "50px" }}>
       <Box sx={{ width: '100%', mr: 1 }}>
         <LinearProgress variant="determinate" value={progress} />
       </Box>

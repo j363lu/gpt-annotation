@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 // import Form from './components/Form';
 import SurveyGUI from './components/SurveyGUI';
+import Footer from './components/Footer';
 import reportWebVitals from './reportWebVitals';
 
 import store from './app/store';
@@ -13,6 +14,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <SurveyGUI />
+      <Footer />
     </Provider>
   </React.StrictMode>
 );
