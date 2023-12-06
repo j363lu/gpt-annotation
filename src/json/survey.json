@@ -1,6 +1,7 @@
 {
   "title": "AI Coder",
-  "description": "This web application utilizes OpenAI's GPT-3.5-turbo and GPT-4-turbo models to detect the absence, low amount, or high amount of a certain feature in some input text. Given the definition and some examples of a feature, the large language models will examine each input text and determine whether the feature is present or not. You will need to provide a CSV file with a column containing the input, together with the definition of the feature, and the result will be downloaded as a CSV file.",
+  "description": "This web application uses OpenAI's GPT-3.5-turbo and GPT-4-turbo models for feature identification (presence or absence) in text based on pre-defined instructions. Given the definition and some examples of a feature, the large language models will examine each input text and determine whether the feature is present or not. You will need to provide a CSV file with a column containing the input, together with the definition of the feature, and the result will be downloaded as a CSV file.",
+  "logo": "https://futurescape.uwaterloo.ca/ai-coder/logo.png",
   "logoPosition": "right",
   "pages": [
     {
@@ -10,35 +11,53 @@
           "type": "text",
           "name": "apiKey",
           "title": "OpenAI API key",
-          "description": "An OpenAI API key is needed to run the app, which runs in your web browser, and the requests are sent to OpenAI directly. We will not have a copy of your key.",
+          "description": "OpenAI charges for using OpenAI API, so an OpenAI API key is required. You can find your API key at <a href='https://platform.openai.com/account/api-keys' target='_blank'>https://platform.openai.com/account/api-keys</a>. You can see the pricing at <a href='https://openai.com/pricing' target='_blank'>https://openai.com/pricing</a> <br><br> The application runs in your web browser, and the requests are sent to OpenAI directly. The key will never be transmitted to our server or stored in any location at any time.",
           "hideNumber": true,
           "isRequired": true,
           "requiredErrorText": "Please enter an OpenAI API Key",
           "inputType": "password"
         },
         {
-          "type": "file",
-          "name": "csv",
-          "title": "CSV File",
-          "description": "Please choose a CSV file with a column containing the text to be annotated.",
-          "hideNumber": true,
-          "isRequired": true,
-          "requiredErrorText": "Please choose a CSV file",
-          "acceptedTypes": ".csv",
-          "waitForUpload": true,
-          "needConfirmRemoveFile": true
-        },
-        {
-          "type": "text",
-          "name": "column",
-          "title": "Text Column",
-          "description": "Please enter the column name in the CSV file containing the text to be annotated",
-          "hideNumber": true,
-          "isRequired": true,
-          "requiredErrorText": "Please specify the column name in the CSV file"
+          "type": "panel",
+          "name": "csvInput",
+          "elements": [
+            {
+              "type": "image",
+              "name": "csvExample",
+              "imageLink": "https://futurescape.uwaterloo.ca/ai-coder/csvExample.png",
+              "contentMode": "image",
+              "imageFit": "cover",
+              "imageHeight": "auto",
+              "imageWidth": "100%"
+            },
+            {
+              "type": "file",
+              "name": "csv",
+              "title": "CSV File",
+              "description": "Please choose a CSV file with a column containing the text to be annotated.",
+              "hideNumber": true,
+              "isRequired": true,
+              "requiredErrorText": "Please choose a CSV file",
+              "acceptedTypes": ".csv",
+              "waitForUpload": true,
+              "needConfirmRemoveFile": true
+            },
+            {
+              "type": "text",
+              "name": "column",
+              "title": "Text Column",
+              "description": "Please enter the column name in the CSV file containing the text to be annotated",
+              "hideNumber": true,
+              "isRequired": true,
+              "requiredErrorText": "Please specify the column name in the CSV file"
+            }
+          ],
+          "title": "CSV Input",
+          "description": "Please select a CSV file with a column containing the input text you wish to annotate. Please also specify the name of the column that contains the inputs. Here is an example of a desired CSV file:"
         }
       ],
-      "title": "API Key and CSV file"
+      "title": "API Key and CSV file",
+      "description": "You will first provide your OpenAI API key and a CSV file containing an input column on this page."
     },
     {
       "name": "page2",
@@ -69,15 +88,11 @@
               "type": "checkbox",
               "name": "models",
               "title": "Models",
-              "description": "Which model(s) to use? You may select multiple models and the results from different models will be saved to different columns in the resultant CSV file",
+              "description": "Which model(s) to use? You may select multiple models and the results from different models will be saved to different columns in the resultant CSV file. <br><br> You can check the pricing of the models here: <br> <a href='https://openai.com/pricing' target='_blank'>https://openai.com/pricing</a>",
               "hideNumber": true,
               "isRequired": true,
               "requiredErrorText": "Please select at least one model",
-              "choices": [
-                "gpt-3.5-turbo-1106",
-                "gpt-4-1106-preview",
-                "openchat3.5"
-              ],
+              "choices": ["gpt-3.5-turbo-1106", "gpt-4-1106-preview"],
               "maxSelectedChoices": "",
               "minSelectedChoices": ""
             },

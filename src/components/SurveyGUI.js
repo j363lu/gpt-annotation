@@ -1,3 +1,5 @@
+import { Converter } from "showdown";
+
 import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
 import 'survey-core/defaultV2.min.css';
@@ -5,7 +7,7 @@ import { DefaultLight } from 'survey-core/themes/default-light';
 
 import surveyJson from '../json/survey.json'
 import { parseSurveyCsv, downloadArrayAsCsv, zeroShotJson, fewShotJson, fewShotOrdinalJson } from '../utils/helperFuncs';
-import { getResponse, validateKey } from '../utils/requestGPT';
+import { getResponse } from '../utils/requestGPT';
 import LinearProgressWithLabel from './LinearProgressWithLabel';
 import ErrorSnackbar from './ErrorSnackbar';
 
@@ -192,6 +194,18 @@ function SurveyGUI() {
   survey.onComplete.add(() => {dispatch(setCompleted(true))});
   survey.onServerValidateQuestions.add(validate);
   survey.completedHtml = completedHtml;
+
+  // Instantiate Showdown
+  const converter = new Converter();
+  survey.onTextMarkdown.add(function (survey, options) {
+      // Convert Markdown to HTML
+      let str = converter.makeHtml(options.text);
+      // Remove root paragraphs <p></p>
+      str = str.substring(3);
+      str = str.substring(0, str.length - 4);
+      // Set HTML markup to render
+      options.html = str;
+  });
 
   // saving survey data to local storage 
   survey.onValueChanged.add(saveSurveyData);
