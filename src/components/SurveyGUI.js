@@ -218,13 +218,13 @@ function SurveyGUI() {
   }
 
   return (
-    <>
-    <Survey model={survey} />
-    <Container maxWidth="md">
-      <LinearProgressWithLabel />
-    </Container>
-    <ErrorSnackbar />
-    </>
+    <div id="gui">
+      <Survey model={survey} />
+      <Container maxWidth="md">
+        <LinearProgressWithLabel />
+      </Container>
+      <ErrorSnackbar />
+    </div>
   );
 }
 
