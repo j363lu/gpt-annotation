@@ -163,8 +163,10 @@ function SurveyGUI() {
 
     // validate csv and column
     if (data.csv && data.csv[0] && data.column) {
+      const name = data.csv[0].name;
+      const fileExtension = name.split('.').pop().toLowerCase();
       // validate file type
-      if (data.csv[0].type !== "text/csv") {
+      if (fileExtension !== "csv") {
         errors["csv"] = "Please provide a CSV file"
       } else {
         // validate column name

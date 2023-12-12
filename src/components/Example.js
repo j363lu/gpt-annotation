@@ -1,5 +1,3 @@
-import { PaperClipIcon } from '@heroicons/react/20/solid'
-
 export default function Example() {
   return (
     <div className='bg-white'>
