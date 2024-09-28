@@ -2,13 +2,13 @@ import OpenAI from "openai";
 import store from "../app/store";
 
 export const validateKey = async (apiKey) => { 
-  const result = await requestGPT(apiKey, [], "gpt-3.5-turbo", 0, 0);
+  const result = await requestGPT(apiKey, [], "gpt-4o-mini", 0, 0);
   console.log(result);
 }
 
 // returns a completion object
 // https://platform.openai.com/docs/api-reference/chat/object
-const requestGPT = async (apiKey, promptList, model="gpt-3.5-turbo", temperature=0, maxTries=3) => {
+const requestGPT = async (apiKey, promptList, model="gpt-4o-mini", temperature=0, maxTries=3) => {
   const openai = new OpenAI({
     apiKey: apiKey,
     dangerouslyAllowBrowser: true,
@@ -80,7 +80,7 @@ const validateResponse = (parsed) => {
 }
 
 // returns a JSON {code: "", response: ""}
-export const getResponse = async (apiKey, promptList, model="gpt-3.5-turbo", temperature=0, maxTries=3) => {
+export const getResponse = async (apiKey, promptList, model="gpt-4o-mini", temperature=0, maxTries=3) => {
   const res = await requestGPT(apiKey, promptList, model, temperature, maxTries);
   const parsed = parseResponse(res);
   const isValid = validateResponse(parsed);

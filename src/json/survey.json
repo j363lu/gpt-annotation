@@ -1,6 +1,6 @@
 {
   "title": "AI Coder",
-  "description": "This web application uses OpenAI's GPT-3.5-turbo and GPT-4-turbo models for feature identification (presence or absence) in text based on pre-defined instructions. Given the definition and some examples of a feature, the large language models will examine each input text and determine whether the feature is present or not. You will need to provide a CSV file with a column containing the input, together with the definition of the feature, and the result will be downloaded as a CSV file.",
+  "description": "This web application uses OpenAI's gpt-4o-mini and gpt-4o models for feature identification (presence or absence) in text based on pre-defined instructions. Given the definition and some examples of a feature, the large language models will examine each input text and determine whether the feature is present or not. You will need to provide a CSV file with a column containing the input, together with the definition of the feature, and the result will be downloaded as a CSV file.",
   "logo": "https://futurescape.uwaterloo.ca/ai-coder/logo.png",
   "logoPosition": "right",
   "pages": [
@@ -92,7 +92,7 @@
               "hideNumber": true,
               "isRequired": true,
               "requiredErrorText": "Please select at least one model",
-              "choices": ["gpt-3.5-turbo-1106", "gpt-4-1106-preview"],
+              "choices": ["gpt-4o-mini", "gpt-4o-2024-08-06"],
               "maxSelectedChoices": "",
               "minSelectedChoices": ""
             },
